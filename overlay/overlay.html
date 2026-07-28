@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+<title>Mango Hub - Overlay</title>
+
+<style>
+
+body {
+
+    margin: 0;
+    overflow: hidden;
+    background: transparent;
+    font-family: "Segoe UI", sans-serif;
+
+}
+
+#player,
+#notification {
+
+    display: none;
+
+}
+
+#alert {
+
+    position: absolute;
+
+    bottom: 40px;
+    left: 40px;
+
+    width: 450px;
+
+    background: linear-gradient(
+        135deg,
+        #0f172a,
+        #1e293b
+    );
+
+    border: 2px solid #38bdf8;
+
+    border-radius: 20px;
+
+    padding: 20px;
+
+    color: white;
+
+    box-shadow:
+        0 0 25px rgba(56,189,248,.5);
+
+    opacity: 0;
+
+    transform:
+        translateX(-80px)
+        scale(.95);
+
+    transition:
+        opacity .5s ease,
+        transform .5s ease;
+
+}
+
+#alert.show {
+
+    opacity: 1;
+
+    transform:
+        translateX(0)
+        scale(1);
+
+}
+
+.title {
+
+    font-size: 24px;
+    font-weight: bold;
+
+}
+
+.user {
+
+    font-size: 34px;
+    font-weight: bold;
+
+    color: #38bdf8;
+
+    margin-top: 10px;
+
+    text-shadow:
+        0 0 15px rgba(56,189,248,.8);
+
+}
+
+.message {
+
+    margin-top: 8px;
+    color: #cbd5e1;
+
+}
+
+.progress {
+
+    width: 100%;
+    height: 8px;
+
+    background: rgba(255,255,255,.1);
+
+    border-radius: 20px;
+
+    margin-top: 15px;
+
+    overflow: hidden;
+
+}
+
+.progress-bar {
+
+    width: 100%;
+    height: 100%;
+
+    background: #38bdf8;
+
+    transform-origin: left center;
+
+}
+
+.queue {
+
+    margin-top: 12px;
+
+    font-size: 14px;
+
+    color: #94a3b8;
+
+}
+
+.glow {
+
+    animation:
+        glow 1.5s infinite;
+
+}
+
+@keyframes glow {
+
+    0% {
+
+        box-shadow:
+        0 0 10px rgba(56,189,248,.4);
+
+    }
+
+    50% {
+
+        box-shadow:
+        0 0 30px rgba(56,189,248,.9);
+
+    }
+
+    100% {
+
+        box-shadow:
+        0 0 10px rgba(56,189,248,.4);
+
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<audio id="player"></audio>
+
+<audio id="notification">
+    <source src="/overlay/notification.mp3">
+</audio>
+
+<div id="alert">
+
+<div class="title">
+    🎤 Nuevo Audio
+</div>
+
+<div
+    class="user"
+    id="username">
+</div>
+
+<div class="message">
+    envió un mensaje de voz
+</div>
+
+<div class="progress">
+
+<div
+    class="progress-bar"
+    id="progressBar">
+</div>
+
+</div>
+
+<div
+    class="queue"
+    id="queueInfo">
+</div>
+
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+
+<script>
+
+const socket = io();
+
+const player =
+    document.getElementById(
+        "player"
+    );
+
+const notification =
+    document.getElementById(
+        "notification"
+    );
+
+const alertBox =
+    document.getElementById(
+        "alert"
+    );
+
+const username =
+    document.getElementById(
+        "username"
+    );
+
+const progressBar =
+    document.getElementById(
+        "progressBar"
+    );
+
+const queueInfo =
+    document.getElementById(
+        "queueInfo"
+    );
+
+let isPlaying = false;
+let currentAudio = null;
+
+function getDisplayName(audio) {
+    const isAnonymous = audio.is_anonymous === true || audio.is_anonymous === 1 || audio.isAnonymous === true;
+    if (isAnonymous) {
+        return "Anónimo";
+    }
+    return audio.username || audio.display_name || "Usuario";
+}
+
+async function updateQueueInfo() {
+
+    try {
+
+        const response =
+            await fetch("/api/voice/queue");
+
+        const queue =
+            await response.json();
+
+        queueInfo.textContent =
+            "Audios en cola: " +
+            queue.length;
+
+    } catch {}
+
+}
+
+async function finishCurrentAudio() {
+
+    if (!currentAudio) {
+        return;
+    }
+
+    try {
+
+        await fetch(
+            "/api/voice/mark-played/" +
+            currentAudio.id,
+            {
+                method: "POST"
+            }
+        );
+
+    } catch {}
+
+    socket.emit(
+        "audio-ended"
+    );
+
+    alertBox.classList.remove(
+        "show"
+    );
+
+    alertBox.classList.remove(
+        "glow"
+    );
+
+    player.pause();
+    player.currentTime = 0;
+
+    currentAudio = null;
+
+    isPlaying = false;
+
+    updateQueueInfo();
+
+}
+
+socket.on(
+    "force-stop",
+    async () => {
+
+        await finishCurrentAudio();
+
+    }
+);
+
+async function playNotification() {
+
+    return new Promise(
+        async (resolve) => {
+
+            try {
+
+                notification.currentTime = 0;
+
+                await notification.play();
+
+                notification.onended =
+                    () => resolve();
+
+            } catch {
+
+                resolve();
+
+            }
+
+        }
+    );
+
+}
+
+async function checkQueue() {
+
+    if (isPlaying) {
+        return;
+    }
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/voice/next-audio"
+            );
+
+        const audio =
+            await response.json();
+
+        if (!audio) {
+
+            updateQueueInfo();
+
+            return;
+        }
+
+        currentAudio = audio;
+
+        isPlaying = true;
+
+        const displayName = getDisplayName(audio);
+
+        socket.emit(
+            "audio-started",
+            {
+                id: audio.id,
+                username: displayName,
+                is_anonymous: audio.is_anonymous
+            }
+        );
+
+        // FORZAR visualización anónima en el overlay
+        username.textContent = displayName;
+
+        alertBox.classList.add(
+            "show"
+        );
+
+        alertBox.classList.add(
+            "glow"
+        );
+
+        await playNotification();
+
+        player.src =
+            "/uploads/" +
+            audio.filename;
+
+        player.play();
+
+        player.onloadedmetadata =
+            () => {
+
+                const duration =
+                    player.duration;
+
+                progressBar.style.transition =
+                    "none";
+
+                progressBar.style.transform =
+                    "scaleX(1)";
+
+                setTimeout(() => {
+
+                    progressBar.style.transition =
+                        `transform ${duration}s linear`;
+
+                    progressBar.style.transform =
+                        "scaleX(0)";
+
+                }, 100);
+
+            };
+
+        player.onended =
+            async () => {
+
+                await finishCurrentAudio();
+
+            };
+
+    } catch (err) {
+
+        console.error(err);
+
+    }
+
+}
+
+updateQueueInfo();
+
+setInterval(
+    checkQueue,
+    2000
+);
+
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mango Hub - xMangoSalao</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ─── LOGIN SCREEN ─── -->
+<div id="loginScreen" class="login-section" style="display:flex;">
+    <div class="login-card">
+        <div class="login-icon">🥭</div>
+        <h2>Bienvenido a Mango Hub</h2>
+        <p>La plataforma oficial de la comunidad de Twitch de <strong>xMangoSalao</strong></p>
+        <p class="login-sub">Inicia sesión con Twitch para acceder a todos los módulos</p>
+        <a href="/auth/twitch" class="btn-twitch">
+            <svg class="twitch-icon" viewBox="0 0 24 24" width="24" height="24">
+                <path fill="currentColor" d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714Z"/>
+            </svg>
+            Iniciar sesión con Twitch
+        </a>
+    </div>
+</div>
+
+<!-- ─── APP SHELL (sidebar + content) ─── -->
+<div id="appShell" class="app-shell" style="display:none;">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-logo">🥭</div>
+            <h2>Mango Hub</h2>
+        </div>
+
+        <div class="sidebar-user">
+            <img id="userAvatar" src="" class="sidebar-avatar">
+            <div>
+                <div id="userName" class="sidebar-name">Usuario</div>
+                <div id="userRole" class="sidebar-role-badge">FOLLOWER</div>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <a href="#" class="nav-link" data-module="dashboard">
+                <span class="nav-icon">🏠</span> Dashboard
+            </a>
+            <a href="#" class="nav-link" data-module="profile">
+                <span class="nav-icon">👤</span> Perfil
+            </a>
+            <a href="#" class="nav-link" data-module="mango-voice">
+                <span class="nav-icon">🎤</span> Mango Voice
+            </a>
+            <a href="#" class="nav-link" data-module="donations">
+                <span class="nav-icon">💵</span> Donaciones
+            </a>
+            <a href="#" class="nav-link" data-module="discord">
+                <span class="nav-icon">💬</span> Discord
+            </a>
+            <a href="#" class="nav-link" data-module="guild">
+                <span class="nav-icon">⚔️</span> Gremio
+            </a>
+            <a href="#" class="nav-link" data-module="settings" data-required-role="STREAMER">
+                <span class="nav-icon">🛠</span> Configuración
+            </a>
+            <a href="#" class="nav-link" data-module="streamer-panel" data-required-role="STREAMER">
+                <span class="nav-icon">📊</span> Panel Streamer
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <a href="/auth/logout" class="sidebar-logout">🚪 Cerrar sesión</a>
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content" id="mainContent">
+        <!-- El contenido se renderiza dinámicamente aquí -->
+    </main>
+
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="components/Components.js"></script>
+<script src="components/Icons.js"></script>
+<script src="app.js"></script>
+
+</body>
+</html>

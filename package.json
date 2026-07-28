@@ -1,0 +1,29 @@
+{
+  "name": "mangohub",
+  "version": "1.0.0",
+  "description": "Mango Hub - Plataforma oficial de la comunidad de Twitch de xMangoSalao",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "keywords": ["mangohub", "xmangosalao", "twitch", "community"],
+  "author": "xMangoSalao Community",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "express-session": "^1.19.0",
+    "multer": "^2.2.0",
+    "passport": "^0.7.0",
+    "passport-twitch-new": "^0.0.3",
+    "socket.io": "^4.8.3",
+    "socket.io-client": "^4.8.3",
+    "sqlite3": "^6.0.1",
+    "uuid": "^14.0.0"
+  },
+  "engines": {
+    "node": "20.x"
+  }
+}

@@ -1,0 +1,19 @@
+# Entorno y configuracion
+.env
+
+# Base de datos SQLite
+*.db
+*.sqlite
+
+# Logs
+logs/
+
+# Directorio de subidas de audio
+uploads/
+
+# Dependencias
+node_modules/
+
+# Sistema
+.DS_Store
+Thumbs.db

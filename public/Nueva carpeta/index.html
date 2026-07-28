@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MangoSalao Voice</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        font-family: Segoe UI, Arial, sans-serif;
+        background: linear-gradient(135deg, #0f172a, #1e293b);
+        color: white;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+    }
+
+    .card {
+        width: 100%;
+        max-width: 700px;
+        background: #1e293b;
+        padding: 30px;
+        border-radius: 18px;
+        box-shadow: 0 0 40px rgba(0,0,0,.4);
+    }
+
+    h1 {
+        text-align: center;
+        margin-top: 0;
+    }
+
+    .subtitle {
+        text-align: center;
+        color: #cbd5e1;
+        margin-bottom: 25px;
+        line-height: 1.8;
+    }
+
+    input {
+        width: 100%;
+        padding: 14px;
+        border: none;
+        border-radius: 10px;
+        margin-top: 15px;
+        margin-bottom: 15px;
+        font-size: 16px;
+    }
+
+    .btn {
+        width: 100%;
+        border: none;
+        border-radius: 12px;
+        padding: 15px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: bold;
+        margin-top: 10px;
+        transition: .2s;
+    }
+
+    .btn:hover {
+        transform: translateY(-2px);
+    }
+
+    .paypal {
+        background: #0070ba;
+        color: white;
+    }
+
+    .record {
+        background: #dc2626;
+        color: white;
+    }
+
+    .stop {
+        background: #f59e0b;
+        color: white;
+    }
+
+    #timer {
+        text-align: center;
+        font-size: 36px;
+        font-weight: bold;
+        margin-top: 20px;
+        transition: .3s;
+    }
+
+    audio {
+        width: 100%;
+        margin-top: 20px;
+    }
+
+    .section {
+        margin-top: 25px;
+        background: #334155;
+        padding: 18px;
+        border-radius: 12px;
+    }
+
+    .section h3 {
+        margin-top: 0;
+        margin-bottom: 10px;
+    }
+
+    .section ol,
+    .section ul {
+        line-height: 1.8;
+        margin-bottom: 0;
+        color: #e2e8f0;
+    }
+
+    hr {
+        border: none;
+        border-top: 1px solid #475569;
+        margin: 25px 0;
+    }
+</style>
+
+</head>
+
+<body>
+
+<div class="card">
+
+<h1>🎤 Envía un Audio a MangoSalao</h1>
+
+<div class="subtitle">
+    🎤 Máximo 30 segundos<br>
+    💵 Pago mínimo USD 1<br>
+    ⭐ Puedes aportar más si deseas apoyar el canal
+</div>
+
+<button
+    class="btn paypal"
+    onclick="window.open('https://paypal.me/aflexp/1USD','_blank')">
+    💳 Pagar USD 1 con PayPal
+</button>
+
+<button
+    class="btn paypal"
+    onclick="window.open('https://paypal.me/aflexp','_blank')">
+    ⭐ Enviar otro monto
+</button>
+
+<hr>
+
+<input
+    id="username"
+    type="text"
+    placeholder="Tu nombre de Twitch">
+
+<button
+    id="recordBtn"
+    class="btn record">
+    🔴 Iniciar Grabación
+</button>
+
+<button
+    id="stopBtn"
+    class="btn stop"
+    disabled>
+    ⏹ Detener Grabación
+</button>
+
+<div id="timer">
+    00:30
+</div>
+
+<audio
+    id="audioPlayer"
+    controls>
+</audio>
+
+<button
+    id="sendBtn"
+    class="btn paypal"
+    disabled>
+    📤 Enviar Audio
+</button>
+
+<div class="section">
+
+    <h3>📋 ¿Cómo funciona?</h3>
+
+    <ol>
+        <li>Haz clic en "Pagar USD 1 con PayPal".</li>
+        <li>Completa el pago.</li>
+        <li>Escribe tu nombre de Twitch.</li>
+        <li>Graba tu audio (máximo 30 segundos).</li>
+        <li>Próximamente podrás enviarlo directamente al stream.</li>
+    </ol>
+
+</div>
+
+<div class="section">
+
+    <h3>📜 Reglas</h3>
+
+    <ul>
+        <li>Máximo 30 segundos por audio.</li>
+        <li>No spam ni publicidad.</li>
+        <li>No amenazas, acoso o discriminación.</li>
+        <li>No contenido sexual explícito.</li>
+        <li>Los audios que incumplan las reglas podrán ser omitidos.</li>
+    </ul>
+
+</div>
+
+
+</div>
+
+<script src="recorder.js"></script>
+
+</body>
+
+</html>
