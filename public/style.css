@@ -1,5 +1,5 @@
 /* ============================================
-   Mango Hub - Design System
+   Mango Hub - Design System & Responsive Layout
    ============================================ */
 
 /* ─── Variables CSS ─── */
@@ -55,6 +55,11 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+}
+
+html, body {
+    max-width: 100%;
+    overflow-x: hidden; /* Evita desbordamiento horizontal en móviles */
 }
 
 body {
@@ -113,6 +118,7 @@ h3, .h3 {
     cursor: pointer;
     transition: all var(--transition-normal);
     font-family: var(--font-family);
+    box-sizing: border-box;
 }
 
 .btn:hover:not(:disabled) {
@@ -241,6 +247,7 @@ h3, .h3 {
     padding: 24px;
     border: 1px solid var(--color-border);
     transition: all var(--transition-normal);
+    max-width: 100%;
 }
 
 .card-header {
@@ -594,6 +601,7 @@ h3, .h3 {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
+    padding: 20px;
     background: linear-gradient(135deg, var(--color-background), var(--color-surface));
 }
 
@@ -632,6 +640,7 @@ h3, .h3 {
 .btn-twitch {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 10px;
     background: var(--color-primary);
     color: white;
@@ -642,6 +651,7 @@ h3, .h3 {
     transition: all var(--transition-normal);
     border: none;
     cursor: pointer;
+    width: 100%;
 }
 
 .btn-twitch:hover {
@@ -674,6 +684,7 @@ h3, .h3 {
     bottom: 0;
     z-index: 100;
     overflow-y: auto;
+    transition: width var(--transition-normal);
 }
 
 .sidebar-header {
@@ -790,6 +801,8 @@ h3, .h3 {
     margin-left: 260px;
     padding: 30px;
     min-height: 100vh;
+    max-width: calc(100vw - 260px);
+    transition: all var(--transition-normal);
 }
 
 /* ─── Dashboard ─── */
@@ -968,30 +981,6 @@ h3, .h3 {
     letter-spacing: 0.5px;
 }
 
-.badge-success {
-    background: rgba(34, 197, 94, 0.15);
-    color: var(--color-success);
-    border: 1px solid var(--color-success);
-}
-
-.badge-danger {
-    background: rgba(239, 68, 68, 0.15);
-    color: var(--color-danger);
-    border: 1px solid var(--color-danger);
-}
-
-.badge-warning {
-    background: rgba(245, 158, 11, 0.15);
-    color: var(--color-warning);
-    border: 1px solid var(--color-warning);
-}
-
-.badge-info {
-    background: rgba(59, 130, 246, 0.15);
-    color: var(--color-info);
-    border: 1px solid var(--color-info);
-}
-
 .disabled-card {
     opacity: 0.65;
 }
@@ -1081,9 +1070,7 @@ h3, .h3 {
     padding-left: 20px;
 }
 
-/* --- Estilos de Formularios y Campos (Mango Hub Theme) --- */
-
-/* Estructura del formulario dentro de las tarjetas */
+/* --- Estilos de Formularios y Campos --- */
 .card form,
 .form-grid {
     display: grid;
@@ -1092,14 +1079,12 @@ h3, .h3 {
     margin-top: 1rem;
 }
 
-/* Grupo de campo (etiqueta + input) */
 .form-group {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
 }
 
-/* Estilo de las etiquetas */
 .form-group label {
     font-size: 0.9rem;
     font-weight: 600;
@@ -1107,7 +1092,6 @@ h3, .h3 {
     margin-bottom: 2px;
 }
 
-/* Estilos para inputs, selects y textareas */
 input[type="text"],
 input[type="number"],
 input[type="email"],
@@ -1127,7 +1111,6 @@ textarea {
     outline: none;
 }
 
-/* Estado al hacer foco / clic */
 input[type="text"]:focus,
 input[type="number"]:focus,
 input[type="email"]:focus,
@@ -1139,7 +1122,6 @@ textarea:focus {
     background-color: #18181c;
 }
 
-/* Personalización de los desplegables (Select) */
 select {
     cursor: pointer;
     appearance: none;
@@ -1168,49 +1150,6 @@ select option {
 audio {
     width: 100%;
     margin-top: 15px;
-}
-
-/* ─── Responsive ─── */
-@media (max-width: 768px) {
-    .sidebar {
-        width: 60px;
-    }
-
-    .sidebar-header h2,
-    .sidebar-user div,
-    .nav-link span:not(.nav-icon),
-    .sidebar-footer a {
-        display: none;
-    }
-
-    .sidebar-user {
-        justify-content: center;
-        padding: 12px;
-    }
-
-    .nav-link {
-        justify-content: center;
-        padding: 12px;
-    }
-
-    .main-content {
-        margin-left: 60px;
-        padding: 20px;
-    }
-
-    .dash-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .login-card {
-        padding: 30px 20px;
-    }
-
-    .toast-container {
-        left: 20px;
-        right: 20px;
-        max-width: none;
-    }
 }
 
 /* ─── Giveaway Widget ─── */
@@ -1326,4 +1265,110 @@ audio {
 
 #giveawayManager .btn {
     font-size: 14px;
+}
+
+/* ============================================
+   ─── RESPONSIVE DESIGN (Móviles y Tablets) ───
+   ============================================ */
+
+/* Pantallas medianas y móviles (< 768px) */
+@media (max-width: 768px) {
+    /* Ajuste de Sidebar */
+    .sidebar {
+        width: 60px;
+    }
+
+    .sidebar-header h2,
+    .sidebar-user div,
+    .nav-link span:not(.nav-icon),
+    .sidebar-footer a {
+        display: none;
+    }
+
+    .sidebar-user {
+        justify-content: center;
+        padding: 12px;
+    }
+
+    .nav-link {
+        justify-content: center;
+        padding: 12px;
+    }
+
+    /* Ajuste de Contenido Principal */
+    .main-content {
+        margin-left: 60px;
+        padding: 15px;
+        max-width: calc(100vw - 60px);
+    }
+
+    /* Banners y Modulos */
+    .welcome-banner {
+        padding: 20px;
+    }
+
+    .welcome-banner h2 {
+        font-size: 20px;
+        flex-wrap: wrap;
+    }
+
+    .module-content,
+    .card {
+        padding: 16px;
+    }
+
+    /* Grillas a una sola columna */
+    .dash-grid,
+    .card form,
+    .form-grid,
+    .stats-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    /* Botones full width en móviles */
+    .btn,
+    .giveaway-widget .btn {
+        width: 100%;
+    }
+
+    /* Formularios */
+    .form-group {
+        width: 100%;
+    }
+
+    /* Login */
+    .login-card {
+        padding: 30px 20px;
+    }
+
+    /* Notificaciones Toast */
+    .toast-container {
+        left: 15px;
+        right: 15px;
+        max-width: none;
+    }
+}
+
+/* Pantallas extra pequeñas / Celulares (< 480px) */
+@media (max-width: 480px) {
+    .main-content {
+        padding: 10px;
+    }
+
+    h1, .h1 { font-size: 22px; }
+    h2, .h2 { font-size: 18px; }
+    h3, .h3 { font-size: 16px; }
+
+    .welcome-avatar {
+        width: 40px;
+        height: 40px;
+    }
+
+    .dash-card {
+        padding: 20px 16px;
+    }
+
+    .timer {
+        font-size: 28px;
+    }
 }
