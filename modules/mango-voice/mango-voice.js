@@ -9,18 +9,13 @@ const logger = require("../../services/logger");
 
 const router = express.Router();
 
-const fs = require('fs');
-const path = require('path');
+// Usamos process.cwd() para apuntar directamente a la raíz del proyecto
+const uploadDir = path.join(process.cwd(), 'uploads');
 
-// Definimos la ruta absoluta hacia la carpeta uploads en la raíz del proyecto
-const uploadDir = path.join(__dirname, '../../uploads'); // Ajusta según la profundidad del archivo (si está en /modules/voice/, dos niveles atrás está la raíz)
-
-// Si la carpeta no existe en Render, la crea automáticamente
 if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir, { recursive: true });
 }
 
-// Configuración de almacenamiento para subida de audios
 const storage = multer.diskStorage({
     destination: (req, file, cb) => cb(null, uploadDir),
     filename: (req, file, cb) => cb(null, Date.now() + ".webm")
