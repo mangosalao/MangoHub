@@ -1268,84 +1268,59 @@ audio {
 }
 
 /* ============================================
-   ─── RESPONSIVE DESIGN (Móviles y Tablets) ───
+   ─── RESPONSIVE CORREGIDO (Móviles y Tablets) ───
    ============================================ */
 
-/* Pantallas medianas y móviles (< 768px) */
 @media (max-width: 768px) {
-    /* Ajuste de Sidebar */
+    /* 1. Ocultar la barra lateral completamente en móviles para ganar todo el ancho */
     .sidebar {
-        width: 60px;
+        display: none !important;
     }
 
-    .sidebar-header h2,
-    .sidebar-user div,
-    .nav-link span:not(.nav-icon),
-    .sidebar-footer a {
-        display: none;
-    }
-
-    .sidebar-user {
-        justify-content: center;
-        padding: 12px;
-    }
-
-    .nav-link {
-        justify-content: center;
-        padding: 12px;
-    }
-
-    /* Ajuste de Contenido Principal */
+    /* 2. El contenido principal toma el 100% real de la pantalla */
     .main-content {
-        margin-left: 60px;
-        padding: 15px;
-        max-width: calc(100vw - 60px);
+        margin-left: 0 !important;
+        padding: 16px 12px !important;
+        max-width: 100% !important;
+        width: 100% !important;
     }
 
-    /* Banners y Modulos */
+    /* 3. Tarjetas e información a todo lo ancho */
     .welcome-banner {
-        padding: 20px;
+        padding: 16px !important;
+        margin-bottom: 20px !important;
     }
 
     .welcome-banner h2 {
-        font-size: 20px;
+        font-size: 20px !important;
         flex-wrap: wrap;
     }
 
-    .module-content,
-    .card {
-        padding: 16px;
-    }
-
-    /* Grillas a una sola columna */
+    /* 4. Asegurar que las tarjetas no se salgan ni se deformen */
     .dash-grid,
     .card form,
     .form-grid,
     .stats-grid {
         grid-template-columns: 1fr !important;
+        width: 100% !important;
     }
 
-    /* Botones full width en móviles */
+    .card, .dash-card {
+        padding: 20px 16px !important;
+        width: 100% !important;
+    }
+
+    /* 5. Botones a lo ancho para tocar fácil con el dedo */
     .btn,
     .giveaway-widget .btn {
-        width: 100%;
+        width: 100% !important;
     }
 
-    /* Formularios */
-    .form-group {
-        width: 100%;
-    }
-
-    /* Login */
-    .login-card {
-        padding: 30px 20px;
-    }
-
-    /* Notificaciones Toast */
+    /* Modales y toasts ajustados */
     .toast-container {
-        left: 15px;
-        right: 15px;
-        max-width: none;
+        left: 10px !important;
+        right: 10px !important;
+        max-width: none !important;
     }
 }
 
